@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Contas à Pagar</ion-title>
+    <ion-buttons slot="primary" (click)="addGastos()">
+      <ion-button >Novo
+        <ion-icon slot="end" name="add"> </ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-toolbar color="danger">
+  <!-- <ion-searchbar [(ngModel)]="searchKey" placeholder="Buscar"></ion-searchbar> -->
+  
+  
+  
+  <label >Informe a data que deseja:
+  
+ <ion-input type="date" [(ngModel)]="dataBuscar"  (ionChange)="carregar()"></ion-input>
+ 
+</label>
+  <ion-buttons slot="end">
+    <ion-button size="small" shape="round" color="medium" (click)="carregar()">
+      <ion-icon name="search"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+
+
+
+<ion-content class="cinza-claro" class="ion-padding">
+<ion-list>
+  <ion-item-sliding *ngFor="let dado of lista">
+    <ion-item-options side="start" *ngIf="dado.pago != 'Sim'">
+      <ion-item-option (click)="baixar(dado.id)">
+        Baixar
+      </ion-item-option>
+    </ion-item-options>
+    <ion-item>
+    <ion-label><ion-icon name="square" color="success" *ngIf="dado.pago === 'Sim'"></ion-icon>
+      <ion-icon name="square" color="danger" *ngIf="dado.pago != 'Sim'"></ion-icon>
+    
+      {{dado.valor}} 
+     
+    <h2><small> <span class="red">{{dado.descricao}}</span> - {{dado.funcionario}}</small></h2></ion-label>
+    </ion-item>
+    <ion-item-options side="end" *ngIf="dado.pago != 'Sim'">
+         <ion-item-option (click)="excluir(dado.id)" color="danger">
+        Excluir
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>
+
+
+<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+  <ion-refresher-content
+    pullingIcon="arrow-dropdown"
+    
+    refreshingSpinner="circles"
+    refreshingText="Carregando...">
+  </ion-refresher-content>
+</ion-refresher>
+
+
+
+
+
+
+<ion-infinite-scroll  (ionInfinite)="loadData($event)">
+<ion-infinite-scroll-content
+  loadingSpinner="bubbles"
+  loadingText="Carregando mais dados">
+</ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+
+</ion-content>

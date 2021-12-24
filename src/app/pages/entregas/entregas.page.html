@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start" (click)="Motoristas()">
+      <ion-button>
+        <ion-icon  name="arrow-back"> </ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> entregas</ion-title>
+    <ion-buttons slot="end" >
+      <ion-label>Buscar por data
+     <ion-input type="date" [(ngModel)]="dataBuscar" color="red" (ionChange)="carregar()"></ion-input>
+    </ion-label>
+     <ion-button size="small" shape="round" (click)="carregar()">
+      <ion-icon name="search"></ion-icon>
+     </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      
+      refreshingSpinner="circles"
+      refreshingText="Carregando...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+
+<ion-list>
+<!-- Sliding item with text options on both sides -->
+<ion-item-sliding *ngFor="let dado of lista">
+  
+  <ion-item>
+    
+    <ion-label><ion-icon name="square" color="primary" *ngIf="dado.status === 'Aguardando'">  </ion-icon> <b *ngIf="dado.status === 'Aguardando'" >Aguardando</b>
+      <ion-icon name="square" color="success" *ngIf="dado.status === 'Finalizada'"></ion-icon>   <b *ngIf="dado.status === 'Finalizada'" >Finalizada</b>
+      <ion-icon name="square" color="danger" *ngIf="dado.status === 'Consultando'"></ion-icon>    <b *ngIf="dado.status === 'Consultando'" >Entregando</b>
+
+      
+      {{dado.cliente}} <b>Entregador:{{dado.motorista}}</b>
+     
+    <h2><small> <span class="red">{{dado.hora}}</span> - {{dado.tipo_atendimento}}</small></h2></ion-label>
+  </ion-item>
+
+ 
+</ion-item-sliding>
+
+
+</ion-list>
+
+
+<ion-infinite-scroll  (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Carregando mais dados">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+</ion-content>
